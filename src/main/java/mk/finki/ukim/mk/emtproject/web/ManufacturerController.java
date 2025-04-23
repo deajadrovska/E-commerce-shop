@@ -1,8 +1,10 @@
 package mk.finki.ukim.mk.emtproject.web;
 
-
-import mk.finki.ukim.mk.emtproject.model.Manufacturer;
-import mk.finki.ukim.mk.emtproject.service.ManufacturerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import mk.finki.ukim.mk.emtproject.dto.CreateManufacturerDto;
+import mk.finki.ukim.mk.emtproject.dto.DisplayManufacturerDto;
+import mk.finki.ukim.mk.emtproject.service.application.ManufacturerApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,44 +12,56 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/manufacturers")
+@Tag(name = "Manufacturer API", description = "Endpoints for managing manufacturers") // OpenAPI tag
 public class ManufacturerController {
 
-    private final ManufacturerService manufacturerService;
+    private final ManufacturerApplicationService manufacturerApplicationService;
 
-    public ManufacturerController(ManufacturerService manufacturerService) {
-        this.manufacturerService = manufacturerService;
+    public ManufacturerController(ManufacturerApplicationService manufacturerApplicationService) {
+        this.manufacturerApplicationService = manufacturerApplicationService;
     }
 
+    @Operation(
+            summary = "Get all manufacturers",
+            description = "Retrieves a list of all available manufacturers."
+    )
     @GetMapping
-    public List<Manufacturer> findAll() {
-        return manufacturerService.findAll();
+    public List<DisplayManufacturerDto> findAll() {
+        return manufacturerApplicationService.findAll();
     }
 
+    @Operation(summary = "Get manufacturer by ID", description = "Finds a manufacturer by its ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Manufacturer> findById(@PathVariable Long id) {
-        return manufacturerService.findById(id)
+    public ResponseEntity<DisplayManufacturerDto> findById(@PathVariable Long id) {
+        return manufacturerApplicationService.findById(id)
                 .map(manufacturer -> ResponseEntity.ok().body(manufacturer))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Add a new manufacturer", description = "Creates a new manufacturer.")
     @PostMapping("/add")
-    public ResponseEntity<Manufacturer> save(@RequestBody Manufacturer manufacturer) {
-        return  manufacturerService.save(manufacturer)
-                .map(savedManufacturer -> ResponseEntity.ok().body(savedManufacturer))
+    public ResponseEntity<DisplayManufacturerDto> save(@RequestBody CreateManufacturerDto createManufacturerDto) {
+        return manufacturerApplicationService.save(createManufacturerDto)
+                .map(manufacturer -> ResponseEntity.ok().body(manufacturer))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
+    @Operation(summary = "Update an existing manufacturer", description = "Updates a manufacturer by ID.")
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Manufacturer> update(@PathVariable Long id, @RequestBody Manufacturer manufacturer) {
-        return manufacturerService.update(id, manufacturer)
-                .map(editedManufacturer -> ResponseEntity.ok().body(editedManufacturer))
+    public ResponseEntity<DisplayManufacturerDto> update(
+            @PathVariable Long id,
+            @RequestBody CreateManufacturerDto createManufacturerDto
+    ) {
+        return manufacturerApplicationService.update(id, createManufacturerDto)
+                .map(manufacturer -> ResponseEntity.ok().body(manufacturer))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Delete a manufacturer", description = "Deletes a manufacturer by its ID.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        if (manufacturerService.findById(id).isPresent()) {
-            manufacturerService.deleteById(id);
+        if (manufacturerApplicationService.findById(id).isPresent()) {
+            manufacturerApplicationService.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
