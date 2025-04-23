@@ -42,8 +42,9 @@ public class CategoryController {
     @PostMapping("/add")
     public ResponseEntity<DisplayCategoryDto> save(@RequestBody CreateCategoryDto createCategoryDto) {
         return categoryApplicationService.save(createCategoryDto)
-                .map(category -> ResponseEntity.ok().body(category))
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 
     @Operation(summary = "Update an existing category", description = "Updates a category by ID.")

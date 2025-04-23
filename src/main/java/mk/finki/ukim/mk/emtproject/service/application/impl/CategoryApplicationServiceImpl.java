@@ -24,9 +24,11 @@ public class CategoryApplicationServiceImpl implements CategoryApplicationServic
     }
 
     @Override
-    public Optional<DisplayCategoryDto> save(CreateCategoryDto category) {
-        return categoryService.save(category.toCategory()).map(DisplayCategoryDto::from);
+    public Optional<DisplayCategoryDto> save(CreateCategoryDto createCategoryDto) {
+        return categoryService.save(createCategoryDto.toCategory())
+                .map(DisplayCategoryDto::from);
     }
+
 
     @Override
     public Optional<DisplayCategoryDto> findById(Long id) {

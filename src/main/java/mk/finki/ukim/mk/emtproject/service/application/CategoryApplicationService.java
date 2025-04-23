@@ -10,12 +10,13 @@ public interface CategoryApplicationService {
 
     List<DisplayCategoryDto> findAll();
 
-    Optional<DisplayCategoryDto> save(CreateCategoryDto category);
-
     Optional<DisplayCategoryDto> findById(Long id);
 
     Optional<DisplayCategoryDto> update(Long id, CreateCategoryDto category);
 
     void deleteById(Long id);
+
+    Optional<DisplayCategoryDto> save(CreateCategoryDto createCategoryDto);
+
 }
 

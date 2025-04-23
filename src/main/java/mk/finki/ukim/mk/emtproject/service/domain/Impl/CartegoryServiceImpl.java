@@ -33,6 +33,7 @@ public class CartegoryServiceImpl implements CategoryService {
         return Optional.of(categoryRepository.save(category));
     }
 
+
     @Override
     public Optional<Category> update(Long id, Category category) {
         return categoryRepository.findById(id).map(existingCategory -> {

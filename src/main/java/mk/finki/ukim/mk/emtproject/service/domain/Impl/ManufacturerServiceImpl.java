@@ -33,6 +33,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         return Optional.of(manufacturerRepository.save(manufacturer));
     }
 
+
     @Override
     public Optional<Manufacturer> update(Long id, Manufacturer manufacturer) {
         return manufacturerRepository.findById(id).map(existingManufacturer -> {

@@ -33,13 +33,13 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        categoryRepository.save(new Category("Sports", "Sports category"));
-        categoryRepository.save(new Category("Food", "Food category"));
-        categoryRepository.save(new Category("Music", "Music category"));
-
-        manufacturerRepository.save(new Manufacturer("Nike", "USA"));
-        manufacturerRepository.save(new Manufacturer("KFC", "USA"));
-        manufacturerRepository.save(new Manufacturer("A Records", "UK"));
+//        categoryRepository.save(new Category("Sports", "Sports category"));
+//        categoryRepository.save(new Category("Food", "Food category"));
+//        categoryRepository.save(new Category("Music", "Music category"));
+//
+//        manufacturerRepository.save(new Manufacturer("Nike", "USA"));
+//        manufacturerRepository.save(new Manufacturer("KFC", "USA"));
+//        manufacturerRepository.save(new Manufacturer("A Records", "UK"));
 
         userRepository.save(new User(
                 "dj",
@@ -47,6 +47,14 @@ public class DataInitializer {
                 "Dea",
                 "Jadrovska",
                 Role.ROLE_ADMIN
+        ));
+
+        userRepository.save(new User(
+                "user",
+                passwordEncoder.encode("user"),
+                "user",
+                "user",
+                Role.ROLE_USER
         ));
     }
 }

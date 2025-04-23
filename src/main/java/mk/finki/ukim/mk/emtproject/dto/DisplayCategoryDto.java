@@ -10,9 +10,6 @@ public record DisplayCategoryDto(Long id, String name, String description) {
         return new DisplayCategoryDto(category.getId(), category.getName(), category.getDescription());
     }
 
-    public Category toCategory() {
-        return new Category(name, description);
-    }
 
     public static List<DisplayCategoryDto> from(List<Category> categories) {
         return categories.stream().map(DisplayCategoryDto::from).toList();

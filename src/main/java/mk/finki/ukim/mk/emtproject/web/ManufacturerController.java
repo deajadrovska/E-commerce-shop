@@ -42,8 +42,9 @@ public class ManufacturerController {
     @PostMapping("/add")
     public ResponseEntity<DisplayManufacturerDto> save(@RequestBody CreateManufacturerDto createManufacturerDto) {
         return manufacturerApplicationService.save(createManufacturerDto)
-                .map(manufacturer -> ResponseEntity.ok().body(manufacturer))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 
     @Operation(summary = "Update an existing manufacturer", description = "Updates a manufacturer by ID.")

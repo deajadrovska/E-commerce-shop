@@ -10,12 +10,11 @@ public record DisplayManufacturerDto(Long id, String name, String address) {
         return new DisplayManufacturerDto(manufacturer.getId(), manufacturer.getName(), manufacturer.getAddress());
     }
 
-    public Manufacturer toManufacturer() {
-        return new Manufacturer(name, address);
-    }
 
     public static List<DisplayManufacturerDto> from(List<Manufacturer> manufacturers) {
-        return manufacturers.stream().map(DisplayManufacturerDto::from).toList();
+        return manufacturers.stream()
+                .map(DisplayManufacturerDto::from)
+                .toList();
     }
 }
 

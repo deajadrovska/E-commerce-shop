@@ -44,5 +44,6 @@ public class ManufacturerApplicationServiceImpl implements ManufacturerApplicati
         return manufacturerService.save(createManufacturerDto.toManufacturer())
                 .map(DisplayManufacturerDto::from);
     }
+
 }
 
