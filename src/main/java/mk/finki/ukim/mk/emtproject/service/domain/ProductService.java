@@ -15,4 +15,6 @@ public interface ProductService {
     Optional<Product> update(Long id, Product product);
 
     void deleteById(Long id);
+
+    void refreshMaterializedView();
 }

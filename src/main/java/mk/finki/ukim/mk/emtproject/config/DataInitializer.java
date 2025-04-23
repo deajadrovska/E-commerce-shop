@@ -31,15 +31,15 @@ public class DataInitializer {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
 //        categoryRepository.save(new Category("Sports", "Sports category"));
-//        categoryRepository.save(new Category("Food", "Food category"));
-//        categoryRepository.save(new Category("Music", "Music category"));
-//
+        categoryRepository.save(new Category("Food", "Food category"));
+        categoryRepository.save(new Category("Music", "Music category"));
+
 //        manufacturerRepository.save(new Manufacturer("Nike", "USA"));
-//        manufacturerRepository.save(new Manufacturer("KFC", "USA"));
-//        manufacturerRepository.save(new Manufacturer("A Records", "UK"));
+        manufacturerRepository.save(new Manufacturer("KFC", "USA"));
+        manufacturerRepository.save(new Manufacturer("A Records", "UK"));
 
         userRepository.save(new User(
                 "dj",
