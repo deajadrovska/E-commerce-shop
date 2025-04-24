@@ -2,8 +2,10 @@ package mk.finki.ukim.mk.emtproject.service.application.impl;
 
 import mk.finki.ukim.mk.emtproject.dto.CreateUserDto;
 import mk.finki.ukim.mk.emtproject.dto.DisplayUserDto;
+import mk.finki.ukim.mk.emtproject.dto.LoginResponseDto;
 import mk.finki.ukim.mk.emtproject.dto.LoginUserDto;
 import mk.finki.ukim.mk.emtproject.model.domain.User;
+import mk.finki.ukim.mk.emtproject.security.JwtHelper;
 import mk.finki.ukim.mk.emtproject.service.application.UserApplicationService;
 import mk.finki.ukim.mk.emtproject.service.domain.UserService;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class UserApplicationServiceImpl implements UserApplicationService {
 
     private final UserService userService;
+    private final JwtHelper jwtHelper;
 
-    public UserApplicationServiceImpl(UserService userService) {
+    public UserApplicationServiceImpl(UserService userService, JwtHelper jwtHelper) {
         this.userService = userService;
+        this.jwtHelper = jwtHelper;
     }
 
     @Override
@@ -33,11 +37,17 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     }
 
     @Override
-    public Optional<DisplayUserDto> login(LoginUserDto loginUserDto) {
-        return Optional.of(DisplayUserDto.from(userService.login(
+    public Optional<LoginResponseDto> login(LoginUserDto loginUserDto) {
+        User user = userService.login(
                 loginUserDto.username(),
                 loginUserDto.password()
-        )));
+        );
+
+        String token = jwtHelper.generateToken(user);
+//        String token  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30";
+
+        return Optional.of(new LoginResponseDto(token));
+
     }
 
     @Override

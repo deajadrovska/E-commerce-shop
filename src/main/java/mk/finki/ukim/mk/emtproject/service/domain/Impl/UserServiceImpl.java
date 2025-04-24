@@ -2,17 +2,13 @@ package mk.finki.ukim.mk.emtproject.service.domain.Impl;
 
 import mk.finki.ukim.mk.emtproject.model.domain.User;
 import mk.finki.ukim.mk.emtproject.model.enumerations.Role;
-import mk.finki.ukim.mk.emtproject.model.exceptions.InvalidArgumentsException;
-import mk.finki.ukim.mk.emtproject.model.exceptions.InvalidUsernameOrPasswordException;
-import mk.finki.ukim.mk.emtproject.model.exceptions.PasswordsDoNotMatchException;
-import mk.finki.ukim.mk.emtproject.model.exceptions.UsernameAlreadyExistsException;
+import mk.finki.ukim.mk.emtproject.model.exceptions.*;
 import mk.finki.ukim.mk.emtproject.repository.UserRepository;
 import mk.finki.ukim.mk.emtproject.service.domain.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import mk.finki.ukim.mk.emtproject.model.exceptions.InvalidUserCredentialsException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -57,11 +53,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String username, String password) {
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty())
             throw new InvalidArgumentsException();
-        }
-        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(
-                InvalidUserCredentialsException::new);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        if (!passwordEncoder.matches(password, user.getPassword()))
+            throw new InvalidUserCredentialsException();
+        return user;
+
     }
 }
 
